@@ -2,6 +2,9 @@
 const express = require("express");
 const db = require("./utils/database");
 const Users = require("./models/users.model");
+require("dotenv").config();
+
+const PORT = process.env.PORT || 8000;
 
 db.authenticate() // es una función asincrona
   .then(() => console.log("Base de datos conectada"))
@@ -144,8 +147,8 @@ app.put("/users/:id", async (req, res) => {
 });
 
 // dejar escuchando a nuestro servidor en un puerto
-app.listen(8000, () => {
-  console.log("Servidor escuchando en el pto 8000");
+app.listen(PORT, () => {
+  console.log(`Servidor escuchando en el pto ${PORT}`);
 });
 
 console.log(process.env);
