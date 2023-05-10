@@ -22,11 +22,13 @@ app.get("/", (req, res) => {
 // axios.post(url, {firstname, lastaname, email, password}); body
 // INSERT INTO users (firstname, lastname, email, password) VALUES ()
 
+// una petición -> POST localhost:8000/users
+// ! C
 app.post("/users", async (req, res) => {
   try {
     // extraemos el cuerpo de la peitición
     // {firstname, lastaname, email, password}
-    const newUser = req.body;
+    const newUser = req.body; // epxress
     // INSERT INTO users (firstname, lastname, email, password) VALUES ()
     await Users.create(newUser);
     // respondemos con un 201 - created
@@ -36,9 +38,9 @@ app.post("/users", async (req, res) => {
     res.status(400).json(error);
   }
 });
-
+// ! R
 // obtener a todos los usuarios de la base de datos
-// SELECT * FROM users;
+// * SELECT * FROM users;
 // Users.findAll()
 
 // SELECT firstname, lastname, email FROM users;
@@ -47,7 +49,13 @@ app.post("/users", async (req, res) => {
 // }
 
 // SELECT id, firstname, lastname, email, craetedAt, updatedAt FROM users;
+// {
+//    attributes: {
+//      exclude: ['password']
+//    }
+// }
 
+// ? Petición GET a localhost:8000/users
 app.get("/users", async (req, res) => {
   try {
     const users = await Users.findAll({
@@ -62,12 +70,13 @@ app.get("/users", async (req, res) => {
 });
 
 // get user by id
+// SELECT * FROM users WHERE id=3
 app.get("/users/id/:id", async (req, res) => {
   try {
     // para recuperar el  parametro de ruta
     // * req.params
     // ? es un objeto que tiene todos los parametro de la ruta
-    // ? {aidi: 5, user: 'Ian', id: 4}
+    // ? {id: 4} -> localhost:8000/users/id/4
     const { id } = req.params;
     console.log(req.params);
 
@@ -86,6 +95,7 @@ app.get("/users/id/:id", async (req, res) => {
 
 // si quiero encontrar por otro campo
 // encontrar a un usuario por su correo electronico?
+// ? SELECT * FROM users WHERE email=valor
 
 app.get("/users/email/:email", async (req, res) => {
   try {
@@ -93,7 +103,6 @@ app.get("/users/email/:email", async (req, res) => {
     const user = await Users.findOne({
       where: { email }, // { email: email }
     });
-    console.log(user);
     res.json(user);
   } catch (error) {
     res.status(400).json(error);
@@ -107,7 +116,7 @@ app.delete("/users/:id", async (req, res) => {
   try {
     const { id } = req.params;
     await Users.destroy({
-      where: { id }, // where: { id : id }
+      where: { id }, // where: { id : 4 }
     });
     res.status(204).send();
   } catch (error) {
@@ -139,17 +148,4 @@ app.listen(8000, () => {
   console.log("Servidor escuchando en el pto 8000");
 });
 
-// servidor
-// configuramos la conexión
-// verificamos la conexión con bd
-
-// nodemon --- hot reload
-// dependencia de desarrollo
-
-// react router
-// localhost:3000/product/5 --> path params
-
-// asincronismo
-
-// promises en js
-//
+console.log(process.env);
